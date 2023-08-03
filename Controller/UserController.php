@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+$callUserController = new UserController();
+
 class UserController
 {
     public function __construct()
