@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<form action="../Service/LoginService.php" method="post" id="login">
+<form method="post" id="login">
     <label for="username">Username:</label>
     <input type="text" id="username" name="username">
     <label for="password">Password:</label><br>
@@ -16,12 +16,11 @@
 </form>
 <h1 id="result"></h1>
 <script>
-    /*
     $(document).ready(function () {
         $("#login").submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: ".../Service/LoginValidator.php",
+                url: ".../Service/LoginService.php",
                 method: "POST",
                 data: $(this).serialize(),
                 dataType: "text",
@@ -36,7 +35,6 @@
             });
         });
     });
-*/
 </script>
 </body>
 </html>
