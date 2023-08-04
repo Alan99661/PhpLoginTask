@@ -12,7 +12,13 @@ class UserRepository
 
     public function findByUsernameAndPassword(string $username, string $password): ?User
     {
-        $query = "SELECT id as id, username as username, password as password FROM user WHERE username = :username AND password = :password";
+        $query = "
+        SELECT id as id,
+        username as username,
+        password as password 
+        FROM user
+        WHERE username = :username AND password = :password";
+
         $connection = $this->database->getConnection();
         $statement = $connection->prepare($query);
         $statement->bindParam(':username', $username);
@@ -26,5 +32,3 @@ class UserRepository
     }
 
 }
-
-include_once "../Database/DatabasePDO.php";
