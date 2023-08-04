@@ -20,25 +20,31 @@ class LoginService
 
     private function login()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'] ?? '';
-            $password = $_POST['password'] ?? '';
-            $username = htmlspecialchars(isset($_POST['username']) ? $_POST['username'] : '');
-            $password = htmlspecialchars(isset($_POST['password']) ? $_POST['password'] : '');
+        try {
 
 
-            $user = $this->userRepository->findByUsernameAndPassword($username, $password);
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            if ($user !== null) {
-                http_response_code(200);
-                $response = json_encode(array('message' => 'Login successful!'));
-                echo $response;
-            } else {
-                http_response_code(400);
-                $response = json_encode(array('message' => 'Invalid credentials!'));
-                echo $response;
+                $username = htmlspecialchars(isset($_POST['username']) ? $_POST['username'] : '');
+                $password = htmlspecialchars(isset($_POST['password']) ? $_POST['password'] : '');
+
+                $user = $this->userRepository->findByUsernameAndPassword($username, $password);
+
+                if ($user !== null) {
+                    http_response_code(200);
+                    $response = json_encode(array('message' => 'Login successful!'));
+                    echo $response;
+                } else {
+                    $response = json_encode(array('message' => 'Invalid credentials!'));
+                    echo $response;
+                    http_response_code(400);
+                }
+                exit();
             }
-            exit();
+        } catch (Exception $e) {
+            $response = json_encode(array('message' => 'Unforeseen error'));
+            echo $response;
+            http_response_code(400);
         }
     }
 }

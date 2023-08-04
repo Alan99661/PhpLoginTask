@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="username">Username:</label>
             <input class="form-control" id="username" name="username" type="text">
-            <p id="usernameWarning" class="text-danger"></p>
+            <p class="text-danger" id="usernameWarning"></p>
 
         </div>
         <div class="form-group">
@@ -34,11 +34,13 @@
     <h1 id="result"></h1>
 
 </div>
+
 <script>
     $(document).ready(function () {
         $("#login").submit(function (e) {
             e.preventDefault();
 
+            // Clear previous warnings
             $('#usernameWarning').text("");
             $('#passwordWarning').text("");
             $('#result').text("");
@@ -55,23 +57,25 @@
                 return;
             }
 
+            // If validation passes, perform AJAX request
             $.ajax({
                 url: "Service/LoginService.php",
                 method: "POST",
                 data: $(this).serialize(),
-                dataType: "text",
+                dataType: "json", // Expecting JSON response
                 success: function (response) {
-                    var result = JSON.parse(response);
                     console.log(response);
-                    $('#result').text(result.message);
+                    $('#result').text(response.message);
                 },
                 error: function (xhr, status, error) {
-                    console.log(error);
-                    $('#result').text("An error occurred.");
+                    console.log(xhr);
+                    var responseMessage = xhr.responseJSON ? xhr.responseJSON.message : "An error occurred.";
+                    $('#result').text(responseMessage);
                 }
             });
         });
     });
 </script>
+
 </body>
 </html>
